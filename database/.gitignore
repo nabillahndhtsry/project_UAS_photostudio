@@ -1,0 +1,29 @@
+*.sqlite*
+
+# Laravel
+.env
+/node_modules
+/vendor
+/public/storage
+/storage/*.key
+storage/framework/sessions/*
+storage/framework/views/*
+storage/framework/cache/*
+storage/logs/*
+/bootstrap/cache/*
+
+# Testing
+/coverage
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
