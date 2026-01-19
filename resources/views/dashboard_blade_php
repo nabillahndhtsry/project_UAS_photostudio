@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Photo Studio</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Photo Studio Admin</a>
+            <div class="navbar-text">
+                Login sebagai: <strong>{{ Session::get('username') }}</strong> | 
+                <a href="{{ url('/logout') }}" class="text-light">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action active">Dashboard</a>
+                    <a href="#" class="list-group-item list-group-item-action">Manajemen Studio</a>
+                    <a href="#" class="list-group-item list-group-item-action">Data Booking</a>
+                    <a href="#" class="list-group-item list-group-item-action">Data Pembayaran</a>
+                    <a href="#" class="list-group-item list-group-item-action">Data Customer</a>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <h3>Selamat Datang, Admin!</h3>
+                <p>Anda berhasil login sebagai Administrator.</p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="card text-white bg-primary mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Studio</h5>
+                                <p class="card-text" style="font-size: 2rem;">5</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-white bg-success mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Booking Hari Ini</h5>
+                                <p class="card-text" style="font-size: 2rem;">3</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-white bg-warning mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Pending Payment</h5>
+                                <p class="card-text" style="font-size: 2rem;">2</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="/" class="btn btn-secondary">Kembali ke Beranda</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
