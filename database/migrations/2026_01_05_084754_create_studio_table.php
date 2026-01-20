@@ -6,24 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('studio', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_studio');
+            $table->string('nama');
             $table->text('deskripsi')->nullable();
-            $table->integer('harga_per_jam');
-            $table->enum('status', ['tersedia', 'dibooking'])->default('tersedia');
+            $table->decimal('harga_per_jam', 15, 2);
+            $table->integer('kapasitas')->default(1);
+            $table->string('gambar')->nullable();
+            $table->enum('status', ['tersedia', 'tidak tersedia'])->default('tersedia');
+            $table->text('fasilitas')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('studio');
