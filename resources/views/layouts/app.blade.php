@@ -123,15 +123,51 @@
         }
 
         .section-padding {
-            padding: 80px 0;
+            padding: 50px 0;
         }
         
+        
+        /* Hero Carousel Styles */
         .hero-section {
-            background: linear-gradient(180deg, rgba(115, 97, 89, 0.6) 30%, rgba(52, 9, 9, 0.96) 96%),
-                        url('https://images.unsplash.com/photo-1763920324325-59311fe6cc0b?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            position: relative;
+            padding: 0;
+        }
+
+        .hero-slide {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            justify-content: center;
+            align-items: center;
             background-size: cover;
             background-position: center;
-            padding: 100px 0;
+        }
+
+        /* Slide Background Images */
+        .slide-1 {
+            background: linear-gradient(180deg, rgba(115, 97, 89, 0.6) 30%, rgba(52, 9, 9, 0.96) 96%),
+                        url('/images/studio/photo1.jpg');
+        }
+
+        .slide-2 {
+            background: linear-gradient(180deg, rgba(115, 97, 89, 0.6) 30%, rgba(52, 9, 9, 0.96) 96%),
+                        url('/images/studio/photo2.jpg');
+        }
+
+        .slide-3 {
+            background: linear-gradient(180deg, rgba(115, 97, 89, 0.6) 30%, rgba(52, 9, 9, 0.96) 96%),
+                        url('/images/studio/potrait1.jpg');
+        }
+
+        .slide-4 {
+            background: linear-gradient(180deg, rgba(115, 97, 89, 0.6) 30%, rgba(52, 9, 9, 0.96) 96%),
+                        url('/images/studio/potrait2.jpg');
+        }
+
+        /* PERHATIAN: Sesuaikan nama file slide-5 sesuai gambar yang Anda miliki */
+        .slide-5 {
+            background: linear-gradient(180deg, rgba(115, 97, 89, 0.6) 30%, rgba(52, 9, 9, 0.96) 96%),
+                        url('/images/studio/photo2.jpg'); /* Ganti dengan nama file yang benar */
         }
         
         .feature-icon {
@@ -199,10 +235,10 @@
                         <a class="nav-link" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#services">Services</a>
+                        <a class="nav-link" href="#studios">Studios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#studios">Studios</a>
+                        <a class="nav-link" href="#gallery">Gallery</a>
                     </li>
                     
                     <!-- Jika sudah login, tampilkan dashboard -->
@@ -212,8 +248,39 @@
                                 <a class="nav-link" href="/admin/dashboard">Admin Dashboard</a>
                             </li>
                         @else
-                            <li class="nav-item">
-                                <a class="nav-link" href="/customer/dashboard">Dashboard</a>
+                            <!-- Customer Dashboard dengan Dropdown -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="/customer/dashboard" id="customerDashboardDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Dashboard
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="customerDashboardDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="/customer/dashboard">
+                                            <i class="fas fa-chart-line me-2"></i> Dashboard Utama
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('customer.studio.list') }}">
+                                            <i class="fas fa-plus-circle me-2"></i> Booking Baru
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('customer.booking.history') }}">
+                                            <i class="fas fa-list me-2"></i> Booking Saya
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('customer.pembayaran') }}">
+                                            <i class="fas fa-credit-card me-2"></i> Pembayaran
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('customer.profile') }}">
+                                            <i class="fas fa-user me-2"></i> Akun Saya
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         @endif
                         <li class="nav-item ms-3">

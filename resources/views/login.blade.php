@@ -41,6 +41,14 @@
                             </div>
                         @endif
 
+                        <!-- DEBUG: Tampilkan intended_url jika ada -->
+                        @if(session('intended_url'))
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <small>Anda akan diredirect ke halaman booking setelah login</small>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+
                         <form method="POST" action="{{ url('/login') }}">
                             @csrf
                             <div class="mb-3">

@@ -41,24 +41,18 @@
                     </div>
                     
                     <!-- Booking Button -->
-                    @if(Session::get('login'))
-                        @if($studio->status == 'tersedia')
-                            <a href="{{ route('customer.booking.create', $studio->id) }}" class="btn btn-utama btn-lg w-100">
-                                <i class="fas fa-calendar-check me-2"></i> Booking Sekarang
-                            </a>
-                        @else
-                            <button class="btn btn-secondary btn-lg w-100" disabled>
-                                <i class="fas fa-ban me-2"></i> Tidak Tersedia
-                            </button>
-                        @endif
-                    @else
-                        <a href="{{ route('login') }}" class="btn btn-utama btn-lg w-100">
-                            <i class="fas fa-sign-in-alt me-2"></i> Login untuk Booking
+                    @if($studio->status == 'tersedia')
+                        <a href="{{ route('customer.booking.create', $studio->id) }}" class="btn btn-utama btn-lg w-100">
+                            Booking Sekarang
                         </a>
+                    @else
+                        <button class="btn btn-secondary btn-lg w-100" disabled>
+                            <i class="fas fa-ban me-2"></i> Tidak Tersedia
+                        </button>
                     @endif
                     
                     <!-- Kembali -->
-                    <a href="{{ route('customer.studio.list') }}" class="btn btn-outline-secondary btn-lg w-100 mt-2">
+                    <a href="{{ session('from_welcome') ? '/' : route('customer.studio.list') }}" class="btn btn-outline-secondary btn-lg w-100 mt-2">
                         <i class="fas fa-arrow-left me-2"></i> Kembali
                     </a>
                 </div>
@@ -93,7 +87,7 @@
     @endif
     
     <!-- Jadwal Booking yang Sudah Terpakai -->
-    <div class="row mt-4">
+    <div class="row mt-4 mb-5">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">

@@ -12,9 +12,7 @@ use App\Http\Controllers\CustomerBookingController; // ← TAMBAH INI
 use App\Http\Controllers\CustomerDashboardController; // ← TAMBAH INI
 
 // ==================== HALAMAN UTAMA ====================
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [CustomerBookingController::class, 'indexWelcome'])->name('welcome');
 
 // ==================== AUTHENTICATION ====================
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');

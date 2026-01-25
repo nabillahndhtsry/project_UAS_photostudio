@@ -109,9 +109,9 @@
                                     </td>
                                     <td class="payment-table-cell">
                                         @if($item->status_bayar == 'lunas')
-                                            <span class="payment-badge-status-success">LUNAS</span>
+                                            <span class="payment-badge-status-success">Lunas</span>
                                         @else
-                                            <span class="payment-badge-status-warning">BELUM LUNAS</span>
+                                            <span class="payment-badge-status-warning">Belum Lunas</span>
                                         @endif
                                     </td>
                                     <td class="payment-table-cell">

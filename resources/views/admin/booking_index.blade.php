@@ -103,9 +103,9 @@
                                     </td>
                                     <td class="booking-table-cell">
                                         @if($booking->status_bayar == 'lunas')
-                                            <span class="booking-badge-success">LUNAS</span>
+                                            <span class="booking-badge-success">Lunas</span>
                                         @else
-                                            <span class="booking-badge-warning">BELUM LUNAS</span>
+                                            <span class="booking-badge-warning">Belum Lunas</span>
                                         @endif
                                     </td>
                                     <td class="booking-table-cell">
