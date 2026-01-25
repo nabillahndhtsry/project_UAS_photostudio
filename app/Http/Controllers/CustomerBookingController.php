@@ -8,6 +8,17 @@ use Illuminate\Support\Facades\Session;
 
 class CustomerBookingController extends Controller
 {
+    // Halaman welcome dengan data studios dari database
+    public function indexWelcome()
+    {
+        $studios = DB::table('studio')
+            ->where('status', 'tersedia')
+            ->orderBy('id')
+            ->get();
+
+        return view('welcome', compact('studios'));
+    }
+
     // List studio untuk customer
     public function listStudio()
     {
@@ -35,6 +46,11 @@ class CustomerBookingController extends Controller
             ->select('tanggal_booking', 'jam_mulai', 'jam_selesai')
             ->get();
 
+        // Cek apakah datang dari welcome (referrer)
+        $referrer = request()->headers->get('referer');
+        $isFromWelcome = $referrer && preg_match('#/$#', $referrer);
+        session(['from_welcome' => $isFromWelcome]);
+
         return view('customer.studio_detail', compact('studio', 'booked_slots'));
     }
 
@@ -42,6 +58,8 @@ class CustomerBookingController extends Controller
     public function createBooking($studio_id)
     {
         if (!Session::get('login')) {
+            // Simpan intended URL untuk redirect setelah login
+            session(['intended_url' => route('customer.booking.create', $studio_id)]);
             return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
         }
 

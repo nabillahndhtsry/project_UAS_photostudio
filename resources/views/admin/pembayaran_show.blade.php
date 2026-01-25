@@ -60,9 +60,9 @@
                                     <p class="payment-detail-item">
                                         <strong>Status:</strong> 
                                         @if($pembayaran->status_bayar == 'lunas')
-                                            <span class="payment-badge-status-success">LUNAS</span>
+                                            <span class="payment-badge-status-success">Lunas</span>
                                         @else
-                                            <span class="payment-badge-status-warning">BELUM LUNAS</span>
+                                            <span class="payment-badge-status-warning">Belum Lunas</span>
                                         @endif
                                     </p>
                                     <p class="payment-detail-item">

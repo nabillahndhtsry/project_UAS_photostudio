@@ -64,6 +64,9 @@ class AuthController extends Controller
         // Auto login setelah registrasi
         $user = DB::table('users')->where('id', $userId)->first();
 
+        // Cek apakah ada intended URL (dari booking)
+        $intendedUrl = session('intended_url');
+        
         // Simpan data ke session
         Session::put('user_id', $user->id);
         Session::put('name', $user->name);
@@ -71,7 +74,14 @@ class AuthController extends Controller
         Session::put('role', $user->role);
         Session::put('login', TRUE);
 
-        return redirect('/dashboard')->with('success', 'Registrasi berhasil! Selamat datang, ' . $user->name);
+        // Jika ada intended URL, redirect ke sana
+        if ($intendedUrl) {
+            session()->forget('intended_url');
+            return redirect($intendedUrl)->with('success', 'Registrasi berhasil! Selamat datang, ' . $user->name);
+        }
+
+        // Jika registrasi tanpa intended URL, ke welcome
+        return redirect('/')->with('success', 'Registrasi berhasil! Selamat datang, ' . $user->name);
     }
 
     // Proses login (SESUAI STRUCTURE TABEL)
@@ -90,6 +100,9 @@ class AuthController extends Controller
 
         // Cek apakah user ada dan password cocok
         if ($user && Hash::check($request->password, $user->password)) {
+            // Cek apakah ada intended URL (dari booking) SEBELUM update session
+            $intendedUrl = session('intended_url');
+            
             // Simpan data user ke session
             Session::put('user_id', $user->id);
             Session::put('name', $user->name);
@@ -97,11 +110,19 @@ class AuthController extends Controller
             Session::put('role', $user->role);
             Session::put('login', TRUE);
 
-            // Redirect berdasarkan role
+            // Jika ada intended URL, redirect ke sana
+            if ($intendedUrl) {
+                session()->forget('intended_url');
+                return redirect($intendedUrl)->with('success', 'Login berhasil!');
+            }
+
+            // Jika login tanpa intended URL
             if ($user->role == 'admin') {
+                // Admin ke admin dashboard
                 return redirect('/admin/dashboard')->with('success', 'Login berhasil sebagai Admin!');
             } else {
-                return redirect('/dashboard')->with('success', 'Login berhasil!');
+                // Customer ke welcome/home
+                return redirect('/')->with('success', 'Login berhasil!');
             }
         } else {
             // Jika login gagal
