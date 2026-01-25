@@ -90,8 +90,21 @@
                         <div class="mb-4">
                             <h5>Riwayat Booking Terbaru</h5>
                             @if($bookings->count() > 0)
+                            <!-- Search Box -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-search"></i>
+                                        </span>
+                                        <input type="text" id="searchBookingHistory" class="form-control" placeholder="Cari booking berdasarkan studio, status, atau tanggal...">
+                                    </div>
+                                    <small class="text-muted mt-2 d-block">Ketik untuk mencari data secara real-time</small>
+                                </div>
+                            </div>
+
                             <div class="table-responsive">
-                                <table class="table table-sm">
+                                <table class="table table-sm" id="bookingHistoryTable">
                                     <thead class="table-light">
                                         <tr>
                                             <th>Studio</th>
@@ -101,7 +114,7 @@
                                             <th>Status Bayar</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="bookingHistoryTableBody">
                                         @foreach($bookings as $booking)
                                             <tr>
                                                 <td>{{ $booking->studio_name }}</td>
@@ -158,5 +171,38 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Store all table rows
+            var bookingHistoryRows = $('#bookingHistoryTableBody').html();
+
+            $('#searchBookingHistory').on('keyup', function() {
+                var searchValue = $(this).val().toLowerCase();
+
+                if (searchValue === '') {
+                    $('#bookingHistoryTableBody').html(bookingHistoryRows);
+                    return;
+                }
+
+                var filteredRows = '';
+                var rowCount = 0;
+
+                $('#bookingHistoryTableBody tr').each(function() {
+                    var rowText = $(this).text().toLowerCase();
+                    if (rowText.includes(searchValue)) {
+                        filteredRows += $(this).prop('outerHTML');
+                        rowCount++;
+                    }
+                });
+
+                if (rowCount > 0) {
+                    $('#bookingHistoryTableBody').html(filteredRows);
+                } else {
+                    $('#bookingHistoryTableBody').html('<tr><td colspan="5" class="text-center text-muted py-3"><i class="fas fa-search me-2"></i>Tidak ada data yang sesuai</td></tr>');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

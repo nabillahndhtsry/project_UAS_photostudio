@@ -56,10 +56,23 @@
         @endif
 
         @if($studios->count() > 0)
+        <!-- Search Box -->
+        <div class="card studio-form-card mb-3">
+            <div class="card-body">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" id="searchStudio" class="form-control" placeholder="Cari studio berdasarkan nama, harga, atau kapasitas...">
+                </div>
+                <small class="text-muted mt-2 d-block">Ketik untuk mencari data secara real-time</small>
+            </div>
+        </div>
+
         <div class="card studio-form-card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover studio-table">
+                    <table class="table table-hover studio-table" id="studioTable">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -71,7 +84,7 @@
                                 <th>Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="studioTableBody">
                             @foreach($studios as $studio)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
@@ -126,5 +139,38 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Store all table rows
+            var studioRows = $('#studioTableBody').html();
+
+            $('#searchStudio').on('keyup', function() {
+                var searchValue = $(this).val().toLowerCase();
+
+                if (searchValue === '') {
+                    $('#studioTableBody').html(studioRows);
+                    return;
+                }
+
+                var filteredRows = '';
+                var rowCount = 0;
+
+                $('#studioTableBody tr').each(function() {
+                    var rowText = $(this).text().toLowerCase();
+                    if (rowText.includes(searchValue)) {
+                        filteredRows += $(this).prop('outerHTML');
+                        rowCount++;
+                    }
+                });
+
+                if (rowCount > 0) {
+                    $('#studioTableBody').html(filteredRows);
+                } else {
+                    $('#studioTableBody').html('<tr><td colspan="7" class="text-center text-muted py-3"><i class="fas fa-search me-2"></i>Tidak ada data yang sesuai</td></tr>');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
