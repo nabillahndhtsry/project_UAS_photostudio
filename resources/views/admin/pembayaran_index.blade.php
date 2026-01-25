@@ -69,13 +69,26 @@
         @endif
 
         @if($pembayaran->count() > 0)
+        <!-- Search Box -->
+        <div class="card payment-table-card mb-3">
+            <div class="card-body">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" id="searchPembayaran" class="form-control" placeholder="Cari pembayaran berdasarkan customer, studio, atau metode...">
+                </div>
+                <small class="text-muted mt-2 d-block">Ketik untuk mencari data secara real-time</small>
+            </div>
+        </div>
+
         <div class="card payment-table-card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover payment-table">
+                    <table class="table table-hover payment-table" id="pembayaranTable">
                         <thead>
                             <tr>
-                                <th class="payment-table-header">#</th>
+                                <th class="payment-table-header">No</th>
                                 <th class="payment-table-header">Customer</th>
                                 <th class="payment-table-header">Studio</th>
                                 <th class="payment-table-header">Total Bayar</th>
@@ -85,7 +98,7 @@
                                 <th class="payment-table-header">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="pembayaranTableBody">
                             @foreach($pembayaran as $item)
                                 <tr class="payment-table-row">
                                     <td class="payment-table-cell">{{ $loop->iteration }}</td>
@@ -122,7 +135,7 @@
                                         @endif
                                     </td>
                                     <td class="payment-table-cell">
-                                        <a href="/admin/pembayaran/{{ $item->id }}" class="btn payment-btn-info" title="Detail">
+                                        <a href="/admin/pembayaran/{{ $item->id }}" class="btn payment-btn-success" title="Detail">
                                             <i class="fas fa-eye me-1"></i>Detail
                                         </a>
                                         
@@ -166,5 +179,38 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Store all table rows
+            var pembayaranRows = $('#pembayaranTableBody').html();
+
+            $('#searchPembayaran').on('keyup', function() {
+                var searchValue = $(this).val().toLowerCase();
+
+                if (searchValue === '') {
+                    $('#pembayaranTableBody').html(pembayaranRows);
+                    return;
+                }
+
+                var filteredRows = '';
+                var rowCount = 0;
+
+                $('#pembayaranTableBody tr').each(function() {
+                    var rowText = $(this).text().toLowerCase();
+                    if (rowText.includes(searchValue)) {
+                        filteredRows += $(this).prop('outerHTML');
+                        rowCount++;
+                    }
+                });
+
+                if (rowCount > 0) {
+                    $('#pembayaranTableBody').html(filteredRows);
+                } else {
+                    $('#pembayaranTableBody').html('<tr><td colspan="8" class="text-center text-muted py-3"><i class="fas fa-search me-2"></i>Tidak ada data yang sesuai</td></tr>');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

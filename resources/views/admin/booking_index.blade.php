@@ -55,13 +55,26 @@
         @endif
 
         @if($bookings->count() > 0)
+        <!-- Search Box -->
+        <div class="card booking-table-card mb-3">
+            <div class="card-body">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" id="searchBooking" class="form-control" placeholder="Cari booking berdasarkan customer, studio, atau status...">
+                </div>
+                <small class="text-muted mt-2 d-block">Ketik untuk mencari data secara real-time</small>
+            </div>
+        </div>
+
         <div class="card booking-table-card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover booking-table">
+                    <table class="table table-hover booking-table" id="bookingTable">
                         <thead>
                             <tr>
-                                <th class="booking-table-header">#</th>
+                                <th class="booking-table-header">No</th>
                                 <th class="booking-table-header">Customer</th>
                                 <th class="booking-table-header">Studio</th>
                                 <th class="booking-table-header">Tanggal & Jam</th>
@@ -70,7 +83,7 @@
                                 <th class="booking-table-header">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="bookingTableBody">
                             @foreach($bookings as $booking)
                                 @php
                                     $jam_mulai = strtotime($booking->jam_mulai);
@@ -144,8 +157,9 @@
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
-                                        <a href="/admin/booking/{{ $booking->id }}" class="btn payment-btn-info" title="Detail">
-                                            <i class="fas fa-eye me-1"></i>                                        </a>
+                                        <a href="/admin/booking/{{ $booking->id }}" class="btn payment-btn-success" title="Detail">
+                                            <i class="fas fa-eye me"></i>                                       
+                                         </a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -173,5 +187,38 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Store all table rows
+            var bookingRows = $('#bookingTableBody').html();
+
+            $('#searchBooking').on('keyup', function() {
+                var searchValue = $(this).val().toLowerCase();
+
+                if (searchValue === '') {
+                    $('#bookingTableBody').html(bookingRows);
+                    return;
+                }
+
+                var filteredRows = '';
+                var rowCount = 0;
+
+                $('#bookingTableBody tr').each(function() {
+                    var rowText = $(this).text().toLowerCase();
+                    if (rowText.includes(searchValue)) {
+                        filteredRows += $(this).prop('outerHTML');
+                        rowCount++;
+                    }
+                });
+
+                if (rowCount > 0) {
+                    $('#bookingTableBody').html(filteredRows);
+                } else {
+                    $('#bookingTableBody').html('<tr><td colspan="7" class="text-center text-muted py-3"><i class="fas fa-search me-2"></i>Tidak ada data yang sesuai</td></tr>');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

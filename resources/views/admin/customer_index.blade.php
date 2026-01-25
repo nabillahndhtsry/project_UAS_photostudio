@@ -53,37 +53,27 @@
             </div>
         @endif
 
-        <!-- Filter Form -->
-        <div class="card payment-table-card mb-4">
+        @if($customers->count() > 0)
+        <!-- Search Box -->
+        <div class="card payment-table-card mb-3">
             <div class="card-body">
-                <form action="/admin/customer/filter" method="GET" class="row g-3">
-                    
-                    <div class="col-md-4">
-                        <label for="search" class="form-label">Cari (Nama/Email/Telepon)</label>
-                        <input type="text" class="form-control" id="search" name="search" placeholder="Cari customer...">
-                    </div>
-                    <div class="col-md-2 d-flex align-items-end">
-                        <button type="submit" class="btn payment-btn-info w-100">
-                            <i class="fas fa-search me-1"></i> Cari
-                        </button>
-                    </div>
-                </form>
-                <div class="mt-2">
-                    <a href="/admin/customer" class="btn studio-btn-secondary btn-sm">
-                        <i class="fas fa-redo me-1"></i> Reset
-                    </a>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" id="searchCustomer" class="form-control" placeholder="Cari customer berdasarkan nama, email, atau telepon...">
                 </div>
+                <small class="text-muted mt-2 d-block">Ketik untuk mencari data secara real-time</small>
             </div>
         </div>
 
-        @if($customers->count() > 0)
         <div class="card payment-table-card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover payment-table">
+                    <table class="table table-hover payment-table" id="customerTable">
                         <thead>
                             <tr>
-                                <th class="payment-table-header">#</th>
+                                <th class="payment-table-header">No</th>
                                 <th class="payment-table-header">Nama</th>
                                 <th class="payment-table-header">Email</th>
                                 <th class="payment-table-header">Telepon</th>
@@ -92,7 +82,7 @@
                                 <!-- KOLOM AKSI DIHAPUS -->
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="customerTableBody">
                             @foreach($customers as $customer)
                                 <tr class="payment-table-row">
                                     <td class="payment-table-cell">{{ $loop->iteration }}</td>
@@ -130,15 +120,50 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        $(document).ready(function() {
+            // Store all table rows
+            var customerRows = $('#customerTableBody').html();
+
+            $('#searchCustomer').on('keyup', function() {
+                var searchValue = $(this).val().toLowerCase();
+
+                if (searchValue === '') {
+                    $('#customerTableBody').html(customerRows);
+                    return;
+                }
+
+                var filteredRows = '';
+                var rowCount = 0;
+
+                $('#customerTableBody tr').each(function() {
+                    var rowText = $(this).text().toLowerCase();
+                    if (rowText.includes(searchValue)) {
+                        filteredRows += $(this).prop('outerHTML');
+                        rowCount++;
+                    }
+                });
+
+                if (rowCount > 0) {
+                    $('#customerTableBody').html(filteredRows);
+                } else {
+                    $('#customerTableBody').html('<tr><td colspan="6" class="text-center text-muted py-3"><i class="fas fa-search me-2"></i>Tidak ada data yang sesuai</td></tr>');
+                }
+            });
+        });
+
         // Set default tanggal (30 hari terakhir)
         const today = new Date().toISOString().split('T')[0];
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
         const thirtyDaysAgoStr = thirtyDaysAgo.toISOString().split('T')[0];
         
-        document.getElementById('start_date').value = thirtyDaysAgoStr;
-        document.getElementById('end_date').value = today;
+        const startDateElement = document.getElementById('start_date');
+        const endDateElement = document.getElementById('end_date');
+        
+        if (startDateElement) startDateElement.value = thirtyDaysAgoStr;
+        if (endDateElement) endDateElement.value = today;
     </script>
 </body>
 </html>
