@@ -98,12 +98,47 @@
                         </div>
                         <div class="col-md-6">
                             <h6 class="fw-bold text-dark">Metode Pembayaran</h6>
-                            <p class="text-muted">{{ ucfirst($booking->metode_bayar ?? '-') }}</p>
+                            <p class="text-muted">
+                                @if($booking->metode_bayar == 'transfer')
+                                    Transfer Bank
+                                @elseif($booking->metode_bayar == 'ewallet')
+                                    E-Wallet
+                                @else
+                                    {{ ucfirst($booking->metode_bayar ?? '-') }}
+                                @endif
+                            </p>
                         </div>
                     </div>
+                    
+                    @if($booking->bukti_pembayaran)
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6 class="fw-bold text-dark"><i class="fas fa-file me-2"></i>Bukti Pembayaran</h6>
+                            <p class="text-muted">
+                                <a href="{{ asset('storage/' . $booking->bukti_pembayaran) }}" target="_blank" class="btn btn-sm btn-info">
+                                    <i class="fas fa-download me-2"></i>Lihat Bukti
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
             @endif
+
+            <!-- Invoice Card -->
+            <div class="card mb-4 border-info">
+                <div class="card-header bg-info text-white">
+                    <h6 class="fw-bold mb-0"><i class="fas fa-file-invoice me-2"></i>Invoice</h6>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-3">Akses invoice pembayaran Anda di bawah ini.</p>
+                    <a href="{{ route('customer.invoice', $booking->id) }}" class="btn btn-info" target="_blank">
+                        <i class="fas fa-file-pdf me-2"></i>Lihat Invoice
+                    </a>
+                </div>
+            </div>
             
             <!-- Action Buttons -->
             <div class="row mt-4 mb-5">

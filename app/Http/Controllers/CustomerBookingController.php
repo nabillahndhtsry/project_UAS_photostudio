@@ -167,7 +167,7 @@ public function bookingHistory()
             ->where('b.id', $id)
             ->where('b.user_id', Session::get('user_id'))
             ->select('b.*', 's.nama as studio_name', 's.gambar', 's.harga_per_jam', 's.deskripsi', 
-                     'p.status_bayar', 'p.total_bayar', 'p.metode_bayar', 'p.tanggal_bayar')
+                     'p.status_bayar', 'p.total_bayar', 'p.metode_bayar', 'p.tanggal_bayar', 'p.bukti_pembayaran')
             ->first();
 
         if (!$booking) {

@@ -62,12 +62,24 @@
                         </td>
                         <td>Rp {{ number_format($booking->total_bayar ?? 0, 0, ',', '.') }}</td>
                         <td>
-                            <a href="{{ route('customer.booking.detail', $booking->id) }}" 
-                               class="btn btn-utama">Detail</a>
-                            @if($booking->status_booking == 'pending' && $booking->status_bayar == 'belum_lunas')
-                                <a href="{{ route('customer.pembayaran') }}" 
-                                   class="btn btn-sm btn-success">Bayar</a>
-                            @endif
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="{{ route('customer.booking.detail', $booking->id) }}" 
+                                   class="btn btn-utama" title="Lihat Detail">
+                                   <i class="fas fa-eye"></i>
+                                </a>
+                                @if($booking->status_bayar == 'belum_lunas')
+                                    <a href="{{ route('customer.invoice', $booking->id) }}" 
+                                       class="btn btn-info" target="_blank" title="Lihat Invoice">
+                                       <i class="fas fa-file-pdf"></i>
+                                    </a>
+                                @endif
+                                @if($booking->status_booking == 'pending' && $booking->status_bayar == 'belum_lunas')
+                                    <a href="{{ route('customer.pembayaran') }}" 
+                                       class="btn btn-success" title="Bayar Sekarang">
+                                       <i class="fas fa-money-bill"></i>
+                                    </a>
+                                @endif
+                            </div>
                         </td>
                     </tr>
                     @endforeach
