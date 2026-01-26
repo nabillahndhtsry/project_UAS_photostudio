@@ -23,6 +23,7 @@ class PembayaranController extends Controller
             ->join('users as u', 'b.user_id', '=', 'u.id')
             ->select(
                 'p.*',
+                'b.id as booking_id',
                 'b.tanggal_booking',
                 'b.jam_mulai',
                 'b.jam_selesai',

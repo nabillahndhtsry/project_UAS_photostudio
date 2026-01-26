@@ -138,6 +138,10 @@
                                         <a href="/admin/pembayaran/{{ $item->id }}" class="btn payment-btn-success" title="Detail">
                                             <i class="fas fa-eye me-1"></i>Detail
                                         </a>
+
+                                        <a href="{{ route('customer.invoice', $item->booking_id) }}" class="btn btn-info btn-sm" target="_blank" title="Lihat Invoice">
+                                            <i class="fas fa-file-pdf me-1"></i>Invoice
+                                        </a>
                                         
                                         @if($item->status_bayar == 'belum_lunas')
                                             <form action="{{ route('admin.pembayaran.confirm', $item->id) }}" 
