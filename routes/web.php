@@ -197,17 +197,26 @@ Route::get('/customer/invoice/{id}', function($bookingId) {
     }
 
     $userId = Session::get('user_id');
+    $userRole = Session::get('role');
+    $dashboardRoute = $userRole === 'admin' ? '/admin/dashboard' : '/customer/dashboard';
+    $errorRedirectRoute = $userRole === 'admin' ? '/admin/pembayaran' : '/customer/dashboard';
 
     // Ambil data booking dengan relasi
-    $booking = DB::table('booking_studio as b')
+    $query = DB::table('booking_studio as b')
         ->join('studio as s', 'b.studio_id', '=', 's.id')
         ->join('users as u', 'b.user_id', '=', 'u.id')
-        ->where('b.id', $bookingId)
-        ->where('b.user_id', $userId)
-        ->first();
+        ->where('b.id', $bookingId);
+
+    // Jika customer, hanya bisa lihat booking mereka sendiri
+    // Jika admin, bisa lihat semua booking
+    if ($userRole !== 'admin') {
+        $query->where('b.user_id', $userId);
+    }
+
+    $booking = $query->first();
 
     if (!$booking) {
-        return redirect()->route('customer.dashboard')->with('error', 'Invoice tidak ditemukan.');
+        return redirect($errorRedirectRoute)->with('error', 'Invoice tidak ditemukan.');
     }
 
     // Ambil data pembayaran
@@ -216,7 +225,7 @@ Route::get('/customer/invoice/{id}', function($bookingId) {
         ->first();
 
     if (!$pembayaran) {
-        return redirect()->route('customer.dashboard')->with('error', 'Data pembayaran tidak ditemukan.');
+        return redirect($errorRedirectRoute)->with('error', 'Data pembayaran tidak ditemukan.');
     }
 
     // Hitung durasi dan total
@@ -253,7 +262,7 @@ Route::get('/customer/invoice/{id}', function($bookingId) {
         'tanggal_bayar' => $pembayaran->tanggal_bayar,
     ];
 
-    return view('customer.invoice', compact('bookingData', 'customerData', 'paymentData'));
+    return view('customer.invoice', compact('bookingData', 'customerData', 'paymentData', 'userRole'));
 })->name('customer.invoice');
 
 // ==================== ADMIN ROUTES ====================

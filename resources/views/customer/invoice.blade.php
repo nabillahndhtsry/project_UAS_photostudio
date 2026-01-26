@@ -297,7 +297,11 @@
     </div>
 
     <div class="back-link">
-        <a href="/customer/dashboard">← Kembali ke Dashboard</a>
+        @if($userRole === 'admin')
+            <a href="/admin/pembayaran">← Kembali ke Pembayaran</a>
+        @else
+            <a href="/customer/dashboard">← Kembali ke Dashboard</a>
+        @endif
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
